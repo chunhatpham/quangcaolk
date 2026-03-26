@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ff hack</title>
+
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#00ffcc">
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ff hack">
+    <link rel="apple-touch-icon" href="./icon-192x192.png">
+
+    <style>
+        /* CSS được gom vào đây để dễ quản lý */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0f0f13;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            /* Khóa cuộn trang để có cảm giác giống App thay vì Web */
+            overflow: hidden; 
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+        }
+
+        .badge {
+            font-size: 1rem;
+            background: #ff0055;
+            padding: 2px 8px;
+            border-radius: 4px;
+            vertical-align: middle;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .status {
+            color: #888;
+            margin: 15px 0 30px 0;
+            font-size: 1.1rem;
+        }
+
+        .btn-neon {
+            background: transparent;
+            color: #00ffcc;
+            border: 2px solid #00ffcc;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 5px #00ffcc;
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.2) inset;
+        }
+
+        .btn-neon:active {
+            transform: scale(0.95);
+        }
+
+        .btn-neon.loading {
+            color: #ffcc00;
+            border-color: #ffcc00;
+            box-shadow: 0 0 15px rgba(255, 204, 0, 0.2) inset;
+        }
+
+        .btn-neon.success {
+            background: #00ffcc;
+            color: #000;
+            box-shadow: 0 0 20px #00ffcc;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1>FF HACK <span class="badge">PRO</span></h1>
+        </header>
+        
+        <main>
+            <div class="card">
+                <h2>Trạng thái hệ thống</h2>
+                <p class="status">Đang chờ kết nối...</p>
+                <button id="activateBtn" class="btn-neon">KÍCH HOẠT NGAY</button>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Đăng ký Service Worker với đường dẫn tương đối đã fix
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('Service Worker đã đăng ký thành công', reg))
+                    .catch(err => console.error('Lỗi đăng ký Service Worker:', err));
+            });
+        }
+
+        // Xử lý nút bấm
+        document.getElementById('activateBtn').addEventListener('click', function() {
+            const statusText = document.querySelector('.status');
+            
+            // Đổi trạng thái nút khi bấm
+            this.innerText = "ĐANG XỬ LÝ...";
+            this.classList.add('loading');
+            
+            // Giả lập thời gian xử lý mất 2 giây
+            setTimeout(() => {
+                this.innerText = "ĐÃ KÍCH HOẠT";
+                this.classList.remove('loading');
+                this.classList.add('success');
+                statusText.innerText = "Hệ thống đã kết nối thành công!";
+                statusText.style.color = "#00ffcc";
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
